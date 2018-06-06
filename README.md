@@ -1,7 +1,1 @@
-# Evolve
-Simple Evolutionary Algorithm
-*This is neat*
-
-   * This is a bullet
-
-
+REALLY REALLY SIMPLE MACHINE LEARNING ALGORITHM, WITH A BUNCH OF BLOAT PROGRAM IN THE MASTER BRANCH 
