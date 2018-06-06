@@ -54,25 +54,106 @@ public class Generation {
 //        }
 //        this.best = pops.get(index);
 //    }
+
+
+
+
+
+    //above is probly trash;
+
+    // This stuff is importand
+
+
+
+
+
+//    public Net best;
+//    double bestScore;
+//    Net current;
+//    ArrayList<Double> answers;
+//    public Generation(int population,  int valuesOut, ArrayList<Double> in, ArrayList<Double> answers) {
+//        best = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+//        current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+//        this.answers = answers;
+//        bestScore = (new Tester(best, answers)).calc();
+//        System.out.println(bestScore);
+//        for (int i = 0 ; i < population; i++) {
+//            if ((new Tester(current, answers)).calc() < bestScore) {
+//                best = current;
+//                bestScore = (new Tester(best,answers)).calc();
+//                current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+//                System.out.println(i + " "+ bestScore);
+//            }
+//            else {
+//                current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+//            }
+//        }
+//    }
+
     public Net best;
     double bestScore;
     Net current;
-    ArrayList<Double> answers;
-    public Generation(int population,  int valuesOut, ArrayList<Double> in, ArrayList<Double> answers) {
-        best = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
-        current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+    ArrayList<ArrayList<Double>> answers;
+    ArrayList<ArrayList<Double>> scores;
+
+
+    public Generation(int population, ArrayList<ArrayList<Double>> in, ArrayList<ArrayList<Double>> answers) {
+        int valuesOut = answers.get(0).size();
+        best = new Net(in.get(0), valuesOut*3, valuesOut*2, valuesOut);
+        current = new Net(in.get(0), valuesOut*3, valuesOut*2, valuesOut);
         this.answers = answers;
-        bestScore = (new Tester(best, answers)).calc();
+        bestScore = (new Scorer(best, in, answers)).score;
         System.out.println(bestScore);
         for (int i = 0 ; i < population; i++) {
-            if ((new Tester(current, answers)).calc() < bestScore) {
+            if ((new Scorer(current, in, answers)).score < bestScore) {
                 best = current;
-                bestScore = (new Tester(best,answers)).calc();
-                current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+                bestScore = (new Scorer(best, in, answers)).score;
+                current = new Net(in.get(0), valuesOut*3, valuesOut*2, valuesOut);
                 System.out.println(i + " "+ bestScore);
             }
             else {
-                current = new Net(in, valuesOut*3, valuesOut*2, valuesOut);
+                current = new Net(in.get(0), valuesOut*3, valuesOut*2, valuesOut);
+            }
+        }
+    }
+//    public Generation(Net seed, int population, ArrayList<ArrayList<Double>> in, ArrayList<ArrayList<Double>> answers, double mod_W, double mod_Bias) {
+//        int valuesOut = answers.get(0).size();
+//        this.best = seed;
+//        this.current = seed;
+//        this.current.modulate(mod_W, mod_Bias);
+//        this.answers = answers;
+//        this.bestScore = new Scorer(seed, in, answers).score;
+//
+//        System.out.println(bestScore);
+//
+//        for(int i = 0; i < population; i++) {
+//            if (new Scorer(this.current, in, answers).score < bestScore) {
+//                this.best = current;
+//                this.bestScore = (new Scorer(best, in, answers)).score;
+//                current = seed;
+//                current.modulate(mod_W, mod_Bias);
+//                System.out.println(i + " " + bestScore);
+//            }
+//            else {
+//                current = new Net(in.get(0), valuesOut*3, valuesOut*2, valuesOut);
+//            }
+//        }
+//    }
+    public Generation(Net seed, int population, ArrayList<ArrayList<Double>> in, ArrayList<ArrayList<Double>> answers, double mod_W, double mod_Bias) {
+        double valuesOut = answers.get(0).size();
+        this.best = seed;
+        this.bestScore = seed.score(in, answers);
+        this.current = this.best;
+        this.current.modulate(mod_W, mod_Bias);
+
+        System.out.println(this.bestScore);
+
+        for(int i = 0; i < population; i++) {
+            if (current.score(in, answers) < this.bestScore) {
+                this.best = this.current;
+                this.current.modulate(mod_W, mod_Bias);
+                this.bestScore = best.score(in, answers);
+                System.out.println(i + " " + bestScore);
             }
         }
     }

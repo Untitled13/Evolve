@@ -84,6 +84,10 @@ public class Net {
                 org.get(q).get(i).modulate(max_w, max_bias);
             }
         }
+        this.run();
+    }
+    public double score(ArrayList<ArrayList<Double>> in, ArrayList<ArrayList<Double>> answers) {
+        return (new Scorer(this, in, answers)).score;
     }
 }
 

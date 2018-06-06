@@ -12,7 +12,7 @@ public class Tester {
             scores.add(0d);
         }
     }
-    public void reset(Net x, ArrayList<Double> Answers) {
+    public void reset(Net x, ArrayList<Double> Answers, ArrayList<Double> in) {
         this.net = x;
         this.answers = Answers;
         for(int i = 0; i < net.out.size() && i < answers.size(); i++) {
